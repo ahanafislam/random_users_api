@@ -1,4 +1,5 @@
 const { getUsersData, saveUsersData } = require('../utils/usersData.js');
+const { v4: uuidv4 } = require('uuid');
 
 const users = getUsersData();
 
@@ -10,7 +11,41 @@ module.exports.getUsers = (req, res) => {
 // For add new user in users.json file
 module.exports.saveUser = (req, res) => {
     const newUserData = req.body;
-    users.push(newUserData);
+    users.push({id:uuidv4(), ...newUserData});
     saveUsersData(users);
-    res.send(users);
+    res.status(200).send({
+        success: true,
+        messages: `${newUserData.name} Successfully added in users list`,
+        data: newUserData
+    });
+}
+
+// For update the value from user.json file
+module.exports.updateUser = (req, res) => {
+    const {id, gender, name, contact, address, photoUrl} = req.body;
+    const user = users.find(user => user.id === id);
+
+    if(!user) {
+        return res.status(400).send({
+            success: false,
+            messages: `Sorry ${id} is not a valid user id.`,
+        })
+    }
+
+    users.forEach(element => {
+        if(element.id === id) {
+            if (gender) element.gender = gender;
+            if (name) element.name = name;
+            if (contact) element.contact = contact;
+            if (address) element.address = address;
+            if (photoUrl) element.photoUrl = photoUrl;
+        }
+    });
+
+    saveUsersData(users);
+
+    res.status(200).send({
+        success: true,
+        messages: `User with id:${id} Successfully updated`,
+    });
 }
