@@ -23,14 +23,6 @@ module.exports.saveUser = (req, res) => {
 // For update the value from user.json file
 module.exports.updateUser = (req, res) => {
     const {id, gender, name, contact, address, photoUrl} = req.body;
-    const user = users.find(user => user.id === id);
-
-    if(!user) {
-        return res.status(400).send({
-            success: false,
-            messages: `Sorry ${id} is not a valid user id.`,
-        })
-    }
 
     users.forEach(element => {
         if(element.id === id) {
@@ -79,14 +71,6 @@ module.exports.bulkUpdateUser = async(req, res) => {
 // For deleting user by id
 module.exports.deleteUser = (req, res) => {
     const {id} = req.body;
-    const user = users.find(user => user.id === id);
-
-    if(!user) {
-        return res.status(400).send({
-            success: false,
-            messages: `Sorry ${id} is not a valid user id.`,
-        })
-    }
     
     const newUserList = users.filter(user => user.id !== id);
     saveUsersData(newUserList);
