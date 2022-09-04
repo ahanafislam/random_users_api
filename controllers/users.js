@@ -5,7 +5,19 @@ const users = getUsersData();
 
 // Get all random user list
 module.exports.getUsers = (req, res) => {
-    res.send(users);
+    const {limit} = req.query;
+    let usersList = users;
+
+    // if(limit > users.length) {
+    //     res.status(400).send({
+    //         success: false,
+    //         messages: `Sorry limit:${limit} is out of our range. We only have ${users.length} users in our user list now.`,
+    //     });
+    // }
+
+    if (limit) usersList = users.slice(0, limit);
+
+    res.send(usersList);
 }
 
 // Get a single random user
