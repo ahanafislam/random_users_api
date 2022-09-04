@@ -49,3 +49,24 @@ module.exports.updateUser = (req, res) => {
         messages: `User with id:${id} Successfully updated`,
     });
 }
+
+// For deleting user by id
+module.exports.deleteUser = (req, res) => {
+    const {id} = req.body;
+    const user = users.find(user => user.id === id);
+
+    if(!user) {
+        return res.status(400).send({
+            success: false,
+            messages: `Sorry ${id} is not a valid user id.`,
+        })
+    }
+    
+    const newUserList = users.filter(user => user.id !== id);
+    saveUsersData(newUserList);
+
+    res.status(200).send({
+        success: true,
+        messages: `User with id:${id} Successfully deleted`,
+    });
+}
