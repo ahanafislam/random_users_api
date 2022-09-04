@@ -29,6 +29,7 @@ module.exports.getRandomUser = (req, res) => {
 // For add new user in users.json file
 module.exports.saveUser = (req, res) => {
     const newUserData = req.body;
+
     users.push({id:uuidv4(), ...newUserData});
     saveUsersData(users);
     res.status(200).send({
@@ -66,6 +67,14 @@ module.exports.bulkUpdateUser = async(req, res) => {
 
     updatedUsersDataList.forEach(updatedValue => {
         const {id, gender, name, contact, address, photoUrl} = updatedValue;
+        const user = users.find(user => user.id === id);
+
+        if(!user) {
+            return res.status(400).send({
+                success: false,
+                messages: `Sorry ${id} is not a valid user id.`,
+            })
+        }
         
         users.forEach(user => {
             if(user.id === id) {
