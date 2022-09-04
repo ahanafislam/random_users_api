@@ -1,18 +1,13 @@
 const express = require('express');
-const { getUsers, saveUser, updateUser, deleteUser } = require('../../controllers/users');
+const { getUsers, saveUser, updateUser, deleteUser, bulkUpdateUser } = require('../../controllers/users');
+const saveRequestValidator = require('../../middleware/saveRequestValidator');
 
 const router = express.Router();
 
-// For get all random user
-router.get('/all', getUsers);
-
-// For save new user
-router.post('/save', saveUser);
-
-// For update random user data
-router.patch('/update', updateUser);
-
-// For deleting user
-router.delete('/delete', deleteUser);
+router.get('/all', getUsers); // For get all random user
+router.post('/save', saveRequestValidator, saveUser); // For save new user
+router.patch('/update', updateUser); // For update random user data
+router.patch('/bulk-update', bulkUpdateUser); // For update multiple random user data
+router.delete('/delete', deleteUser); // For deleting user
 
 module.exports = router;

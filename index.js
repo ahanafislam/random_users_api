@@ -12,6 +12,7 @@ app.use(bodyParser.json());
 // Routes for users
 app.use('/user', usersRoutes);
 
+// Route for home page
 app.get('/', (req, res) => {
   res.send('Welcome to Random User API');
 })

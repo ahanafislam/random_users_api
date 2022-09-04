@@ -50,6 +50,32 @@ module.exports.updateUser = (req, res) => {
     });
 }
 
+// For update multiple user value from user.json file
+module.exports.bulkUpdateUser = async(req, res) => {
+    const updatedUsersDataList = req.body;
+
+    updatedUsersDataList.forEach(updatedValue => {
+        const {id, gender, name, contact, address, photoUrl} = updatedValue;
+        
+        users.forEach(user => {
+            if(user.id === id) {
+                if (gender) user.gender = gender;
+                if (name) user.name = name;
+                if (contact) user.contact = contact;
+                if (address) user.address = address;
+                if (photoUrl) user.photoUrl = photoUrl;
+            }
+        });
+    });
+
+    saveUsersData(users);
+
+    res.status(200).send({
+        success: true,
+        messages: `Users data Successfully updated`,
+    });
+}
+
 // For deleting user by id
 module.exports.deleteUser = (req, res) => {
     const {id} = req.body;
