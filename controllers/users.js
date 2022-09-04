@@ -8,6 +8,12 @@ module.exports.getUsers = (req, res) => {
     res.send(users);
 }
 
+// Get a single random user
+module.exports.getRandomUser = (req, res) => {
+    const randomUser = users[Math.floor(Math.random()*users.length)];
+    res.send(randomUser);
+}
+
 // For add new user in users.json file
 module.exports.saveUser = (req, res) => {
     const newUserData = req.body;
@@ -71,7 +77,7 @@ module.exports.bulkUpdateUser = async(req, res) => {
 // For deleting user by id
 module.exports.deleteUser = (req, res) => {
     const {id} = req.body;
-    
+
     const newUserList = users.filter(user => user.id !== id);
     saveUsersData(newUserList);
 
